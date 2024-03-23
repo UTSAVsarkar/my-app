@@ -1,44 +1,53 @@
-import React from 'react';
-import { Stack, Text, Link, FontWeights, IStackTokens, IStackStyles, ITextStyles } from '@fluentui/react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Nav } from './components/nav/nav';
+import { Cards } from './components/cards/cards';
+import { initializeIcons } from '@fluentui/font-icons-mdl2';
+import { data } from './components/cards/card.data';
+import { CardDataInt, ICard } from './components/card/cardInterface';
 
-const boldStyle: Partial<ITextStyles> = { root: { fontWeight: FontWeights.semibold } };
-const stackTokens: IStackTokens = { childrenGap: 15 };
-const stackStyles: Partial<IStackStyles> = {
-  root: {
-    width: '960px',
-    margin: '0 auto',
-    textAlign: 'center',
-    color: '#605e5c',
-  },
-};
+initializeIcons();
+
+initializeIcons('https://my.cdn.com/path/to/icons/');
 
 export const App: React.FunctionComponent = () => {
-  return (
-    <Stack horizontalAlign="center" verticalAlign="center" verticalFill styles={stackStyles} tokens={stackTokens}>
-      <img className="App-logo" src={logo} alt="logo" />
-      <Text variant="xxLarge" styles={boldStyle}>
-        Welcome to your Fluent UI app
-      </Text>
-      <Text variant="large">For a guide on how to customize this project, check out the Fluent UI documentation.</Text>
-      <Text variant="large" styles={boldStyle}>
-        Essential links
-      </Text>
-      <Stack horizontal tokens={stackTokens} horizontalAlign="center">
-        <Link href="https://developer.microsoft.com/en-us/fluentui#/get-started/web">Docs</Link>
-        <Link href="https://stackoverflow.com/questions/tagged/office-ui-fabric">Stack Overflow</Link>
-        <Link href="https://github.com/microsoft/fluentui/">Github</Link>
-        <Link href="https://twitter.com/fluentui">Twitter</Link>
-      </Stack>
-      <Text variant="large" styles={boldStyle}>
-        Design system
-      </Text>
-      <Stack horizontal tokens={stackTokens} horizontalAlign="center">
-        <Link href="https://developer.microsoft.com/en-us/fluentui#/styles/web/icons">Icons</Link>
-        <Link href="https://developer.microsoft.com/en-us/fluentui#/styles/web">Styles</Link>
-        <Link href="https://aka.ms/themedesigner">Theme designer</Link>
-      </Stack>
-    </Stack>
-  );
+  const [loc, setLoc] = useState(0)
+  const [selectedId, setSelectedId] = useState<CardDataInt[]>([])
+
+  const whichPage = (location: number) => {
+    setLoc(location);
+  }
+
+  const favorites = (id: CardDataInt): void => {
+    const prevList: CardDataInt[] = selectedId;
+    prevList.push({
+      id: id.id,
+      name: id.name,
+      description: id.description,
+      user: id.user,
+      goto: id.goto,
+      isFavorite: true,
+    });
+
+    setSelectedId(prevList)
+  }
+
+  const renderElement = () => {
+    switch (loc) {
+      case 0: return <Cards data={data} favorites={favorites} />;
+      case 1: return <Cards data={selectedId} favorites={favorites} />;
+      case 2: return <></>;
+      default: return <Cards data={data} favorites={favorites} />;
+    }
+  }
+
+  return <>
+    <div style={{
+      backgroundColor: 'white',
+      backgroundImage: "linear-gradient(43deg, rgb(65, 88, 208) 40%, rgb(200, 80, 192) 46%, rgb(255, 204, 112) 100%)",
+      minHeight: "100vh"
+    }}>
+      <Nav whichPage={whichPage} l={loc} />
+      {renderElement()}
+    </div>
+  </>
 };
