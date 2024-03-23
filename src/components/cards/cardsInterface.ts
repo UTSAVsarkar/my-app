@@ -1,5 +1,3 @@
-import { ICard } from "../card/cardInterface";
-
 export interface ICardInterface {
-  data: ICard[];
+  whichPage: (Location: number)=>void;
 }

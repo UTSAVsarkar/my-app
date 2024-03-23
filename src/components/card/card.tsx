@@ -1,8 +1,10 @@
+import { Popup } from "../modal/popup";
 import { ICard } from "./cardInterface";
 import React, { useState } from "react"; // Import React and useState
 
 export const Card = (cardData: ICard) => {
   const [isHovered, setIsHovered] = useState(false); // State to track hover
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div style={{ padding: 10 }} key={cardData.id}>
@@ -66,11 +68,13 @@ export const Card = (cardData: ICard) => {
             }}
             onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
             onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
+            onClick={() => setIsOpen(!isOpen)}
           >
             Let's Cook
           </a>
         </div>
       </div>
+      {isOpen && <Popup cardData={cardData} isOpen={isOpen} setIsOpen={setIsOpen} />}
     </div>
   );
 };

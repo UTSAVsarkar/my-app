@@ -17,8 +17,7 @@ export const App: React.FunctionComponent = () => {
   const renderElement = () => {
     switch (loc) {
       case 0: return <Cards />;
-      case 1: return <></>
-      case 2: return <></>;
+      case 1: return <></>;
       default: return <Cards />;
     }
   }
