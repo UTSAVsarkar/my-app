@@ -1,11 +1,9 @@
-import * as React from "react";
 import { Stack } from "@fluentui/react";
 import Typewriter from "typewriter-effect";
 import { Card } from "../card/card";
-import { ICardInterface } from "./cardsInterface";
-import { CardDataInt } from "../card/cardInterface";
+import { data } from "./card.data";
 
-export const Cards = (props: ICardInterface) => {
+export const Cards = () => {
   return (
     <>
       <h1
@@ -35,18 +33,14 @@ export const Cards = (props: ICardInterface) => {
         />
       </h1>
       <Stack horizontal wrap styles={{ inner: { justifyContent: "center" } }}>
-        {props.data.map((card) => {
+        {data.map((card) => {
           return (
             <Card
-              data={{
-                id: card.id,
-                name: card.name,
-                description: card.description,
-                user: card.user,
-                goto: card.goto,
-                isFavorite: card.isFavorite
-              }}
-              favorites={props.favorites}
+              id={card.id}
+              name={card.name}
+              description={card.description}
+              user={card.user}
+              goto={card.goto}
             />
           );
         })}

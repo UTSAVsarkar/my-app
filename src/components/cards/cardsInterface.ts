@@ -1,6 +1,5 @@
-import { CardDataInt, ICard } from "../card/cardInterface";
+import { ICard } from "../card/cardInterface";
 
 export interface ICardInterface {
-  data: CardDataInt[];
-  favorites: (id: CardDataInt) => void; 
+  data: ICard[];
 }

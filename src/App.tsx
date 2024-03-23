@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Nav } from './components/nav/nav';
 import { Cards } from './components/cards/cards';
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
-import { data } from './components/cards/card.data';
-import { CardDataInt, ICard } from './components/card/cardInterface';
 
 initializeIcons();
 
@@ -11,32 +9,17 @@ initializeIcons('https://my.cdn.com/path/to/icons/');
 
 export const App: React.FunctionComponent = () => {
   const [loc, setLoc] = useState(0)
-  const [selectedId, setSelectedId] = useState<CardDataInt[]>([])
 
   const whichPage = (location: number) => {
     setLoc(location);
   }
 
-  const favorites = (id: CardDataInt): void => {
-    const prevList: CardDataInt[] = selectedId;
-    prevList.push({
-      id: id.id,
-      name: id.name,
-      description: id.description,
-      user: id.user,
-      goto: id.goto,
-      isFavorite: true,
-    });
-
-    setSelectedId(prevList)
-  }
-
   const renderElement = () => {
     switch (loc) {
-      case 0: return <Cards data={data} favorites={favorites} />;
-      case 1: return <Cards data={selectedId} favorites={favorites} />;
+      case 0: return <Cards />;
+      case 1: return <></>
       case 2: return <></>;
-      default: return <Cards data={data} favorites={favorites} />;
+      default: return <Cards />;
     }
   }
 

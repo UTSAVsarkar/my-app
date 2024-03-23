@@ -5,7 +5,6 @@ export const data = [
     description: "Classic Italian pasta dish with bacon, eggs, and cheese.",
     user: "ItalianChef",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "2",
@@ -13,7 +12,6 @@ export const data = [
     description: "Healthy and flavorful stir-fry with tofu, vegetables, and soy sauce.",
     user: "HealthyEats",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "3",
@@ -21,7 +19,6 @@ export const data = [
     description: "Rich and creamy Indian curry dish with marinated chicken.",
     user: "SpiceMaster",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "4",
@@ -29,7 +26,6 @@ export const data = [
     description: "Thai noodle dish with mixed vegetables, tofu, and peanuts.",
     user: "ThaiFoodie",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "5",
@@ -37,7 +33,6 @@ export const data = [
     description: "Mexican street food classic with seasoned beef, salsa, and toppings.",
     user: "TacoTuesday",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "6",
@@ -45,7 +40,6 @@ export const data = [
     description: "Assorted sushi rolls with fresh fish, avocado, and rice.",
     user: "SushiMaster",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "7",
@@ -53,7 +47,6 @@ export const data = [
     description: "Pasta dish with basil pesto, cherry tomatoes, and pine nuts.",
     user: "PastaLover",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "8",
@@ -61,7 +54,6 @@ export const data = [
     description: "Pizza topped with ham, pineapple, and mozzarella cheese.",
     user: "PizzaFanatic",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "9",
@@ -69,7 +61,6 @@ export const data = [
     description: "Creamy Italian rice dish cooked with mushrooms and Parmesan cheese.",
     user: "RisottoChef",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "10",
@@ -77,7 +68,6 @@ export const data = [
     description: "Hearty chili made with beans, vegetables, and spices.",
     user: "ChiliLover",
     goto: "#",
-    isFavorite: false,
   },
   {
     id: "11",
@@ -85,6 +75,5 @@ export const data = [
     description: "Refreshing salad with tomatoes, cucumbers, olives, and feta cheese.",
     user: "SaladEnthusiast",
     goto: "#",
-    isFavorite: false,
   },
 ];

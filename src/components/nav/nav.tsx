@@ -42,11 +42,6 @@ export const Nav = (props: INavInterface) => {
                 <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                   <li className="nav-item" onClick={() => props.whichPage(1)}>
                     <a className="nav-link" href="#">
-                      Favourite
-                    </a>
-                  </li>
-                  <li className="nav-item" onClick={() => props.whichPage(2)}>
-                    <a className="nav-link" href="#">
                       Add Recipe
                     </a>
                   </li>
@@ -73,7 +68,7 @@ export const Nav = (props: INavInterface) => {
               >
                 <Icon
                   iconName="ChevronLeft"
-                  style={{ fontSize: 16, cursor: 'pointer' }}
+                  style={{ fontSize: 15, cursor: 'pointer' }}
                 />
                 back
               </a>
