@@ -3,6 +3,7 @@ import { Nav } from "./components/nav/nav";
 import { Cards } from "./components/cards/cards";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { data } from "./components/cards/card.data";
+import { Add } from "./components/add/add";
 
 initializeIcons();
 
@@ -29,7 +30,7 @@ export const App: React.FunctionComponent = () => {
       case 0:
         return <Cards data={data} loc={loc} />;
       case 1:
-        return <>Add</>;
+        return <Add />;
       case 2:
         return <Cards data={text === "" ? [] : searchResults} loc={loc} />;
       default:
