@@ -1,3 +1,6 @@
+import { ICard } from "../card/cardInterface";
+
 export interface ICardInterface {
-  whichPage: (Location: number)=>void;
+  data: ICard[];
+  loc: number;
 }

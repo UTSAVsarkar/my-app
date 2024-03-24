@@ -1,7 +1,15 @@
+import { useState } from "react";
 import { INavInterface } from "./navInterface";
 import { Icon } from "@fluentui/react";
 
 export const Nav = (props: INavInterface) => {
+  const [text, setText] = useState<string>("");
+
+  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    setText(newValue);
+  };
+
   return (
     <>
       <nav
@@ -51,8 +59,17 @@ export const Nav = (props: INavInterface) => {
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
+                    onChange={handleTextChange}
                   />
-                  <button className="btn btn-outline-success" type="submit">
+                  <button
+                    className="btn btn-outline-success"
+                    type="submit"
+                    onClick={() => {
+                      props.whichPage(2);
+                      props.searchText(text);
+                      setText("");
+                    }}
+                  >
                     Search
                   </button>
                 </form>
@@ -62,12 +79,16 @@ export const Nav = (props: INavInterface) => {
             <>
               <a
                 className="navbar-brand"
-                onClick={() => props.whichPage(0)}
+                onClick={() => {
+                  props.whichPage(0);
+                  setText("");
+                  props.searchText("");
+                }}
                 style={{ cursor: "pointer" }}
               >
                 <Icon
                   iconName="ChevronLeft"
-                  style={{ fontSize: 15, cursor: 'pointer' }}
+                  style={{ fontSize: 15, cursor: "pointer" }}
                 />
                 back
               </a>

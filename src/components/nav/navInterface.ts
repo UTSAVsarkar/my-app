@@ -1,4 +1,5 @@
-export interface INavInterface{
+export interface INavInterface {
   l: number;
-  whichPage: (Location: number)=>void;
+  whichPage: (Location: number) => void;
+  searchText: (str: string) => void;
 }
