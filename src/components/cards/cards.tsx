@@ -41,6 +41,8 @@ export const Cards = () => {
               description={card.description}
               user={card.user}
               goto={card.goto}
+              requirements={card.requirements}
+              steps={card.steps}
             />
           );
         })}

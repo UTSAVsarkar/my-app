@@ -5,11 +5,8 @@ import {
   FontWeights,
   Modal,
   IIconProps,
-  Label,
   Pivot,
   PivotItem,
-  IStyleSet,
-  ILabelStyles,
 } from "@fluentui/react";
 import { IconButton, IButtonStyles } from "@fluentui/react/lib/Button";
 import { IPopupInt } from "./popupInterface";
@@ -17,8 +14,13 @@ import { IPopupInt } from "./popupInterface";
 export const Popup = (props: IPopupInt) => {
   const titleId = useId("title");
 
-  const labelStyles: Partial<IStyleSet<ILabelStyles>> = {
-    root: { marginTop: 10 },
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   };
 
   return (
@@ -27,7 +29,7 @@ export const Popup = (props: IPopupInt) => {
         titleAriaId={titleId}
         isOpen={props.isOpen}
         onDismiss={() => props.setIsOpen(!props.isOpen)}
-        isBlocking={false}
+        isBlocking={true}
         containerClassName={contentStyles.container}
       >
         <div className={contentStyles.header}>
@@ -37,31 +39,96 @@ export const Popup = (props: IPopupInt) => {
           <IconButton
             styles={iconButtonStyles}
             iconProps={cancelIcon}
-            ariaLabel="Close popup modal"
             onClick={() => props.setIsOpen(!props.isOpen)}
           />
         </div>
-        <div className={contentStyles.body}>
+        <div className={contentStyles.body} style={{ fontSize: 20 }}>
           <p>{props.cardData.description}</p>
           <Pivot>
-            <PivotItem headerText="My Files">
-              <Label styles={labelStyles}>Pivot #1</Label>
+            <PivotItem headerText="Requirements">
+              <ol
+                role="list"
+                style={{
+                  padding: 0,
+                }}
+              >
+                {props.cardData.requirements.map((itr, index) => {
+                  return (
+                    <li
+                      key={index}
+                      style={
+                        {
+                          "--i": 1,
+                          margin: "2rem auto",
+                          padding: "2rem 1rem 1rem",
+                          boxShadow: "0.1rem 0.1rem 1.5rem rgba(0, 0, 0, 0.3)",
+                          borderRadius: "0.25rem",
+                          overflow: "hidden",
+                          backgroundColor: "white",
+                          position: "relative",
+                          counterIncrement: "list",
+                          maxWidth: "45rem",
+                          borderTop: `5px solid ${getRandomColor()}`,
+                          transition: "transform 0.2s ease",
+                        } as React.CSSProperties
+                      }
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = "scale(1.05)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = "scale(1)";
+                      }}
+                    >
+                      <h3
+                        style={{ margin: "0 0 1rem", color: "rgb(70, 70, 70)" }}
+                      >
+                        {index + 1}. {itr}
+                      </h3>
+                    </li>
+                  );
+                })}
+              </ol>
             </PivotItem>
-            <PivotItem headerText="Recent">
-              <Label styles={labelStyles}>Pivot #2</Label>
-            </PivotItem>
-            <PivotItem headerText="Shared with me">
-              <Label styles={labelStyles}>Pivot #3</Label>
-            </PivotItem>
-            <PivotItem headerText="My Files">
-              <Label styles={labelStyles}>Pivot #1</Label>
-            </PivotItem>
-            <PivotItem headerText="Recent">
-              <Label styles={labelStyles}>Pivot #2</Label>
-            </PivotItem>
-            <PivotItem headerText="Shared with me">
-              <Label styles={labelStyles}>Pivot #3</Label>
-            </PivotItem>
+
+            {props.cardData.steps.map((step, index) => {
+              return (
+                <PivotItem headerText={`Step ${index + 1}`}>
+                  <ol role="list" style={{ padding: 0 }}>
+                    {step.map((itr) => {
+                      return (
+                        <li
+                          style={
+                            {
+                              "--i": 1,
+                              margin: "2rem auto",
+                              padding: "2rem 1rem 1rem",
+                              boxShadow:
+                                "0.1rem 0.1rem 1.5rem rgba(0, 0, 0, 0.3)",
+                              borderRadius: "0.25rem",
+                              overflow: "hidden",
+                              backgroundColor: "white",
+                              position: "relative",
+                              counterIncrement: "list",
+                              maxWidth: "45rem",
+                              borderTop: `5px solid ${getRandomColor()}`,
+                            } as React.CSSProperties
+                          }
+                        >
+                          <h3
+                            style={{
+                              margin: "0 0 1rem",
+                              color: "rgb(70, 70, 70)",
+                            }}
+                          >
+                            {itr}
+                          </h3>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </PivotItem>
+              );
+            })}
           </Pivot>
         </div>
       </Modal>
@@ -77,6 +144,8 @@ const contentStyles = mergeStyleSets({
     display: "flex",
     flexFlow: "column nowrap",
     alignItems: "stretch",
+    height: window.innerHeight / 2 + 300,
+    width: window.innerWidth / 2 + 100,
   },
   header: [
     {
@@ -90,9 +159,9 @@ const contentStyles = mergeStyleSets({
     },
   ],
   heading: {
-    color: theme.palette.neutralPrimary,
+    color: theme.palette.magentaDark,
     fontWeight: FontWeights.semibold,
-    fontSize: "inherit",
+    fontSize: 30,
     margin: "0",
   },
   body: {
@@ -112,6 +181,7 @@ const iconButtonStyles: Partial<IButtonStyles> = {
     marginLeft: "auto",
     marginTop: "4px",
     marginRight: "2px",
+    fontSize: 30,
   },
   rootHovered: {
     color: theme.palette.neutralDark,
