@@ -58,7 +58,6 @@ export const Popup = (props: IPopupInt) => {
                       key={index}
                       style={
                         {
-                          "--i": 1,
                           margin: "2rem auto",
                           padding: "2rem 1rem 1rem",
                           boxShadow: "0.1rem 0.1rem 1.5rem rgba(0, 0, 0, 0.3)",
@@ -67,7 +66,7 @@ export const Popup = (props: IPopupInt) => {
                           backgroundColor: "white",
                           position: "relative",
                           counterIncrement: "list",
-                          maxWidth: "45rem",
+                          maxWidth: "50rem",
                           borderTop: `5px solid ${getRandomColor()}`,
                           transition: "transform 0.2s ease",
                         } as React.CSSProperties
@@ -97,22 +96,26 @@ export const Popup = (props: IPopupInt) => {
                     {step.map((itr) => {
                       return (
                         <li
-                          style={
-                            {
-                              "--i": 1,
-                              margin: "2rem auto",
-                              padding: "2rem 1rem 1rem",
-                              boxShadow:
-                                "0.1rem 0.1rem 1.5rem rgba(0, 0, 0, 0.3)",
-                              borderRadius: "0.25rem",
-                              overflow: "hidden",
-                              backgroundColor: "white",
-                              position: "relative",
-                              counterIncrement: "list",
-                              maxWidth: "45rem",
-                              borderTop: `5px solid ${getRandomColor()}`,
-                            } as React.CSSProperties
-                          }
+                          style={{
+                            margin: "2rem auto",
+                            padding: "2rem 1rem 1rem",
+                            boxShadow:
+                              "0.1rem 0.1rem 1.5rem rgba(0, 0, 0, 0.3)",
+                            borderRadius: "0.25rem",
+                            overflow: "hidden",
+                            backgroundColor: "white",
+                            position: "relative",
+                            counterIncrement: "list",
+                            maxWidth: "50rem",
+                            borderTop: `5px solid ${getRandomColor()}`,
+                            transition: "transform 0.2s ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "scale(1.05)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = "scale(1)";
+                          }}
                         >
                           <h3
                             style={{
@@ -136,7 +139,7 @@ export const Popup = (props: IPopupInt) => {
   );
 };
 
-const cancelIcon: IIconProps = { iconName: "Cancel" };
+const cancelIcon: IIconProps = { iconName: "Cancel", style: { fontSize: 25 } };
 
 const theme = getTheme();
 const contentStyles = mergeStyleSets({
@@ -145,7 +148,7 @@ const contentStyles = mergeStyleSets({
     flexFlow: "column nowrap",
     alignItems: "stretch",
     height: window.innerHeight / 2 + 300,
-    width: window.innerWidth / 2 + 100,
+    width: window.innerWidth / 2 + 180,
   },
   header: [
     {
