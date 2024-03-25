@@ -30,7 +30,7 @@ export const App: React.FunctionComponent = () => {
       case 0:
         return <Cards data={data} loc={loc} />;
       case 1:
-        return <Add />;
+        return <Add whichPage={whichPage} />;
       case 2:
         return <Cards data={text === "" ? [] : searchResults} loc={loc} />;
       default:

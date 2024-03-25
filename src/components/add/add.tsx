@@ -1,9 +1,12 @@
 import { Stack } from "@fluentui/react";
 import { useState } from "react";
+import { IAdd } from "./add.types";
+import { Card } from "../card/card";
 
-export const Add = () => {
+export const Add = (props: IAdd) => {
   const [step, setStep] = useState(0);
   const [isHovered, setIsHovered] = useState(false); // State to track hover
+  const [count, setCount] = useState(0);
 
   const welcomeElement = (): JSX.Element => {
     return (
@@ -102,7 +105,7 @@ export const Add = () => {
             Enter recipe requirements
           </h1>
           <textarea
-            placeholder="Enter"
+            placeholder="Enter the ingridients required for your dish"
             style={{
               padding: "10px",
               border: "none",
@@ -122,6 +125,132 @@ export const Add = () => {
     );
   };
 
+  const stepsElement = (): JSX.Element => {
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Stack>
+          <h1
+            style={{
+              fontSize: "4.5em",
+              textAlign: "center",
+              color: "white",
+            }}
+          >
+            Enter the steps to cook
+          </h1>
+          <Stack>
+            <input
+              type="number"
+              max={8}
+              min={0}
+              placeholder="Number of steps? (It should be less than 9)"
+              style={{
+                padding: "10px",
+                border: "none",
+                borderBottom: "1px solid #ccc",
+                background: "rgba(255, 255, 255, 0.5)",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                borderRadius: "5px",
+                outline: "none",
+                margin: "10px", // adjust margin as needed
+                color: "#333", // adjust text color
+                fontFamily: "Arial, sans-serif", // adjust font family
+              }}
+              onChange={(ev) => {
+                setCount(parseInt(ev.currentTarget.value));
+              }}
+            />
+            {count < 9 &&
+              Array.from({ length: count }, (_, index) => (
+                <>
+                  <input
+                    placeholder={`Enter Step-${index + 1}`}
+                    key={index}
+                    type="text"
+                    style={{
+                      padding: "10px",
+                      border: "none",
+                      borderBottom: "1px solid #ccc",
+                      background: "rgba(255, 255, 255, 0.5)",
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                      borderRadius: "5px",
+                      outline: "none",
+                      margin: "10px", // adjust margin as needed
+                      color: "#333", // adjust text color
+                      fontFamily: "Arial, sans-serif", // adjust font family
+                    }}
+                  />
+                </>
+              ))}
+          </Stack>
+        </Stack>
+      </div>
+    );
+  };
+
+  const previewElement = (): JSX.Element => {
+    const testData = {
+      id: "1",
+      name: "Spaghetti Carbonara",
+      description: "Classic Italian pasta dish with bacon, eggs, and cheese.",
+      user: "ItalianChef",
+      goto: "#",
+      requirements: [
+        "Spaghetti",
+        "Bacon",
+        "Eggs",
+        "Parmesan Cheese",
+        "Black Pepper",
+      ],
+      steps: [
+        ["Cook pasta in salted boiling water until al dente."],
+        ["Reserve some pasta water."],
+        [
+          "In a separate pan, cook diced bacon until crispy.",
+          "Remove excess fat.",
+        ],
+        ["In a bowl, whisk eggs with grated Parmesan cheese and black pepper."],
+        [
+          "Add cooked spaghetti to the pan with bacon.",
+          "Pour in egg mixture.",
+          "Stir quickly to combine.",
+        ],
+        [
+          "If too dry, add reserved pasta water to create a creamy sauce.",
+          "Serve hot with extra cheese.",
+        ],
+      ],
+    };
+
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Stack>
+          <h1
+            style={{
+              fontSize: "4.5em",
+              textAlign: "center",
+              color: "white",
+              marginTop: "18%",
+            }}
+          >
+            Here is your recipe card
+          </h1>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Card
+              id={testData.id}
+              name={testData.name}
+              description={testData.description}
+              user={testData.user}
+              goto={testData.goto}
+              requirements={testData.requirements}
+              steps={testData.steps}
+            />
+          </div>
+        </Stack>
+      </div>
+    );
+  };
+
   const renderElement = (): JSX.Element => {
     switch (step) {
       case 0:
@@ -130,19 +259,22 @@ export const Add = () => {
         return userDetailsElement();
       case 2:
         return requirementsElement();
+      case 3:
+        return stepsElement();
+      case 4:
+        return previewElement();
+    }
+    return <></>;
+  };
+
+  const buttonName = (): string => {
+    switch (step) {
+      case 3:
+        return "preview";
+      case 4:
+        return "publish";
       default:
-        return (
-          <h1
-            style={{
-              fontSize: "4.5em",
-              textAlign: "center",
-              color: "white",
-              marginTop: window.innerHeight / 3 + 50,
-            }}
-          >
-            Create Your Recipe!
-          </h1>
-        );
+        return "next";
     }
   };
 
@@ -216,9 +348,14 @@ export const Add = () => {
             }}
             onMouseEnter={() => setIsHovered(true)} // Set hover state to true on mouse enter
             onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
-            onClick={() => setStep(step + 1)}
+            onClick={() => {
+              if (step === 4) {
+                props.whichPage(0);
+              }
+              setStep(step + 1);
+            }}
           >
-            next
+            {buttonName()}
           </a>
         </div>
       </div>
