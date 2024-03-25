@@ -4,6 +4,7 @@ import { Cards } from "./components/cards/cards";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { data } from "./components/cards/card.data";
 import { Add } from "./components/add/add";
+import { ICard } from "./components/card/cardInterface";
 
 initializeIcons();
 
@@ -12,6 +13,11 @@ initializeIcons("https://my.cdn.com/path/to/icons/");
 export const App: React.FunctionComponent = () => {
   const [loc, setLoc] = useState(0);
   const [text, setText] = useState("");
+
+  const addCard = (newData: ICard) => {
+    data.push(newData);
+    data.reverse();
+  };
 
   const whichPage = (location: number) => {
     setLoc(location);
@@ -30,7 +36,7 @@ export const App: React.FunctionComponent = () => {
       case 0:
         return <Cards data={data} loc={loc} />;
       case 1:
-        return <Add whichPage={whichPage} />;
+        return <Add whichPage={whichPage} addCard={addCard} />;
       case 2:
         return <Cards data={text === "" ? [] : searchResults} loc={loc} />;
       default:

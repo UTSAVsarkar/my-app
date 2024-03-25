@@ -1,12 +1,20 @@
-import { Stack } from "@fluentui/react";
+import { Icon, Stack } from "@fluentui/react";
 import { useState } from "react";
 import { IAdd } from "./add.types";
 import { Card } from "../card/card";
+import { ICard } from "../card/cardInterface";
 
 export const Add = (props: IAdd) => {
   const [step, setStep] = useState(0);
   const [isHovered, setIsHovered] = useState(false); // State to track hover
   const [count, setCount] = useState(0);
+
+  const [name, setName] = useState<string>("");
+  const [dishName, setDishName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [requirements, setRequirements] = useState<string[]>([]);
+  const [required, setRequired] = useState<string>("");
+  const [steps, setSteps] = useState(new Map<number, string>([]));
 
   const welcomeElement = (): JSX.Element => {
     return (
@@ -40,6 +48,7 @@ export const Add = (props: IAdd) => {
           <input
             type="text"
             placeholder="Enter your name"
+            value={name}
             style={{
               padding: "10px",
               border: "none",
@@ -52,10 +61,12 @@ export const Add = (props: IAdd) => {
               color: "#333", // adjust text color
               fontFamily: "Arial, sans-serif", // adjust font family
             }}
+            onChange={(e) => setName(e.currentTarget.value)}
           />
           <input
             type="text"
             placeholder="Enter your dish name"
+            value={dishName}
             style={{
               padding: "10px",
               border: "none",
@@ -68,9 +79,11 @@ export const Add = (props: IAdd) => {
               color: "#333", // adjust text color
               fontFamily: "Arial, sans-serif", // adjust font family
             }}
+            onChange={(e) => setDishName(e.currentTarget.value)}
           />
           <textarea
             placeholder="Give a brief description about your dish"
+            value={description}
             style={{
               padding: "10px",
               border: "none",
@@ -84,6 +97,7 @@ export const Add = (props: IAdd) => {
               fontFamily: "Arial, sans-serif", // adjust font family
               height: 200,
             }}
+            onChange={(e) => setDescription(e.currentTarget.value)}
           />
         </Stack>
       </div>
@@ -104,8 +118,10 @@ export const Add = (props: IAdd) => {
           >
             Enter recipe requirements
           </h1>
-          <textarea
-            placeholder="Enter the ingridients required for your dish"
+          <input
+            type="text"
+            placeholder="Enter ingridients required for your dish and press enter"
+            value={required}
             style={{
               padding: "10px",
               border: "none",
@@ -117,9 +133,34 @@ export const Add = (props: IAdd) => {
               margin: "10px", // adjust margin as needed
               color: "#333", // adjust text color
               fontFamily: "Arial, sans-serif", // adjust font family
-              height: 200,
+            }}
+            onChange={(e) => setRequired(e.currentTarget.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && required) {
+                setRequirements([...requirements, required.trim()]);
+                setRequired("");
+              }
             }}
           />
+          <div>
+            <Stack horizontal wrap tokens={{ childrenGap: 5 }}>
+              {requirements.map((tag, index) => (
+                <div key={index}>
+                  <span className="badge rounded-pill bg-warning text-dark">
+                    {tag}
+                    <Icon
+                      iconName="Cancel"
+                      onClick={() =>
+                        setRequirements(requirements.filter((i) => i !== tag))
+                      }
+                      style={{ marginLeft: 5, cursor: "pointer" }}
+                      styles={{ root: { fontSize: 10 } }}
+                    />
+                  </span>
+                </div>
+              ))}
+            </Stack>
+          </div>
         </Stack>
       </div>
     );
@@ -143,6 +184,7 @@ export const Add = (props: IAdd) => {
               type="number"
               max={8}
               min={0}
+              value={count}
               placeholder="Number of steps? (It should be less than 9)"
               style={{
                 padding: "10px",
@@ -167,6 +209,7 @@ export const Add = (props: IAdd) => {
                     placeholder={`Enter Step-${index + 1}`}
                     key={index}
                     type="text"
+                    value={steps.get(index)}
                     style={{
                       padding: "10px",
                       border: "none",
@@ -179,6 +222,11 @@ export const Add = (props: IAdd) => {
                       color: "#333", // adjust text color
                       fontFamily: "Arial, sans-serif", // adjust font family
                     }}
+                    onChange={(e) => {
+                      const newMap = new Map(steps);
+                      newMap.set(index, e.currentTarget.value);
+                      setSteps(newMap);
+                    }}
                   />
                 </>
               ))}
@@ -189,37 +237,22 @@ export const Add = (props: IAdd) => {
   };
 
   const previewElement = (): JSX.Element => {
+    const cleanUpSteps: string[][] = [];
+
+    steps.forEach((i) => {
+      const parts = i.split(".").map((part) => part.trim());
+      const newList = parts.filter((part) => part !== "");
+      cleanUpSteps.push(newList);
+    });
+
     const testData = {
       id: "1",
-      name: "Spaghetti Carbonara",
-      description: "Classic Italian pasta dish with bacon, eggs, and cheese.",
-      user: "ItalianChef",
+      name: dishName,
+      description: description,
+      user: name,
       goto: "#",
-      requirements: [
-        "Spaghetti",
-        "Bacon",
-        "Eggs",
-        "Parmesan Cheese",
-        "Black Pepper",
-      ],
-      steps: [
-        ["Cook pasta in salted boiling water until al dente."],
-        ["Reserve some pasta water."],
-        [
-          "In a separate pan, cook diced bacon until crispy.",
-          "Remove excess fat.",
-        ],
-        ["In a bowl, whisk eggs with grated Parmesan cheese and black pepper."],
-        [
-          "Add cooked spaghetti to the pan with bacon.",
-          "Pour in egg mixture.",
-          "Stir quickly to combine.",
-        ],
-        [
-          "If too dry, add reserved pasta water to create a creamy sauce.",
-          "Serve hot with extra cheese.",
-        ],
-      ],
+      requirements: requirements,
+      steps: cleanUpSteps,
     };
 
     return (
@@ -350,6 +383,25 @@ export const Add = (props: IAdd) => {
             onMouseLeave={() => setIsHovered(false)} // Set hover state to false on mouse leave
             onClick={() => {
               if (step === 4) {
+                const cleanUpSteps: string[][] = [];
+
+                steps.forEach((i) => {
+                  const parts = i.split(".").map((part) => part.trim());
+                  const newList = parts.filter((part) => part !== "");
+                  cleanUpSteps.push(newList);
+                });
+
+                const newData: ICard = {
+                  id: "1",
+                  name: dishName,
+                  description: description,
+                  user: name,
+                  goto: "#",
+                  requirements: requirements,
+                  steps: cleanUpSteps,
+                };
+
+                props.addCard(newData);
                 props.whichPage(0);
               }
               setStep(step + 1);
